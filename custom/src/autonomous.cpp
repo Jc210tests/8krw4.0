@@ -17,8 +17,9 @@ void exampleAuton() {
   //redleft
   lift.setVelocity(100,pct);
 lift.spinToPosition(800,deg);
-driveProfiled(12,350,false,0);
-swing(90,1,1000,false,12);
+driveProfiled(10,320,false,0);
+curveCircle(90, 10, 500, true, 9);
+
 driveProfiled(10,1000,true,0);
 lift.setVelocity(20,pct);
 lift.spinToPosition(0,deg);
@@ -27,33 +28,60 @@ wait(550,msec);
 claw1.stop(hold);
 driveProfiled(-10,1000,false,70);
 turnProfiled(45, 800, true, 0.0);
-/*
 driveProfiled(5, 1000, false, 0.0);
 claw1.spin(fwd, 12, volt);
 driveProfiled(15,1000,true, 0);
-claw1.stop();
-
 driveProfiled(15,1000,false,6);
-driveProfiled(4,2000,true,4);
+claw1.stop();
 swing(200,1,500, false, 12);
-driveTo(10,1000,true,12);
+runAsync([]{driveTo(10,1000,true,12);});
+waitUntilTraveled(5);
 lift.setVelocity(100, pct);
 lift.spinToPosition(1000, deg);
 wait(100,msec);
+
 lift.spinToPosition(0, deg);
+
+claw1.spin(reverse, 12, volt);
+wait(50,msec); //1.scor
 claw1.spin(reverse, 12, volt);
 wait(50,msec);
+claw1.stop(coast);
 driveTo(-10, 1000, false, 12);
 turnProfiled(-130, 1000, false, 0);
 driveTo(30, 1000, false, 12);
 
-driveTo(30, 1700, false, 12);
+driveProfiled(30, 1700, true, 0.0);
+driveTo(5,1000,false,5);
+swing(180, 1, 1000, true, 6);
+claw1.spin(fwd,100,pct);
+wait(50,msec);
+claw1.stop(hold);
+
+swing(-65,-1,1000,false,12);
+runAsync([]{driveTo(9,500,true,12);});
+waitUntilTraveled(1);
+lift.setVelocity(100,pct);
+lift.spinToPosition(1000,deg);
+claw1.spin(reverse,12,volt);
+
+
+
+/*
+
+
+
+
+
+
+
+
 claw1.spin(fwd,100,pct);
 runAsync([]{swing(180, 1, 1000, true, 6);});
 
 wait(100,msec);
 claw1.stop();
-swing(-65,-1,1000,false,12);
+
 driveTo(9,500,true,12);
 
 */
