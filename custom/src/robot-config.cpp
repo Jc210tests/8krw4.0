@@ -190,8 +190,8 @@ double path_lookahead = 12;            // Pure pursuit lookahead (inches): bigge
 double path_max_lateral_accel = 120;   // Slows down in curves so the robot doesn't slide (in/s^2)
 
 // Driver control feel, used by driverTank() and driverArcade()
-double driver_curve = 0;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
-double driver_deadband = 0;  // Stick values below this (percent) count as zero
+double driver_curve = 2;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
+double driver_deadband = 2;  // Stick values below this (percent) count as zero
 
 // ============================================================================
 // DO NOT CHANGE ANYTHING BELOW
