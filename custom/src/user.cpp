@@ -11,7 +11,7 @@
 void runAutonomous() {
   // Runs the routine picked on the Brain screen (or with the controller arrows while disabled).
   // Add routines to the list in runPreAutonomous() below.
-  exampleAuton2();
+  exampleAuton();
 }
 
 // controller_1 input variables (snake_case)
@@ -57,15 +57,15 @@ void runDriver() {
     double rightPos = right_lift.position(deg);
 
     if (controller_1.ButtonR1.pressing()) {
-      if (leftPos < liftMaxDeg) left_lift.spin(fwd, 8, volt);
+      if (leftPos < liftMaxDeg) left_lift.spin(fwd, 12, volt);
       else left_lift.stop(hold);
 
-      if (rightPos < liftMaxDeg) right_lift.spin(fwd, 8, volt);
+      if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
       else right_lift.stop(hold);
 
     } else if (controller_1.ButtonL1.pressing()) {
-      left_lift.spin(reverse, 8, volt);
-      right_lift.spin(reverse, 8, volt);
+      left_lift.spin(reverse, 6, volt);
+      right_lift.spin(reverse, 6, volt);
     } else {
       left_lift.stop(hold);
       right_lift.stop(hold);
@@ -102,8 +102,8 @@ void runPreAutonomous() {
   // startMcl();
 
   // Autonomous routines for the selector, in the order they appear on the Brain screen
- addAuton("Right Red", exampleAuton);
-  addAuton("Left Red", exampleAuton2);
+  addAuton("RightRed", exampleAuton);
+  addAuton("LeftRed", exampleAuton2);
   addAuton("Skills ", redGoalRush);
   addAuton("Async Example", asyncExample);
   addAuton("Path Example", pathExample);

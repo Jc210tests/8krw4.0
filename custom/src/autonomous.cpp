@@ -14,16 +14,105 @@
 // Format: returnType functionName() { code }
 
 void exampleAuton() {
-  // Use this for tuning linear and turn pid
-  setPose(-164.245, -15.515, 0);
+  //redleft
+  lift.setVelocity(100,pct);
+lift.spinToPosition(800,deg);
+driveProfiled(12,350,false,0);
+swing(90,1,1000,false,12);
+driveProfiled(10,1000,true,0);
+lift.setVelocity(20,pct);
+lift.spinToPosition(0,deg);
+claw1.spin(reverse, 9, volt);
+wait(550,msec);
+claw1.stop(hold);
+driveProfiled(-10,1000,false,70);
+turnProfiled(45, 800, true, 0.0);
+/*
+driveProfiled(5, 1000, false, 0.0);
+claw1.spin(fwd, 12, volt);
+driveProfiled(15,1000,true, 0);
+claw1.stop();
+
+driveProfiled(15,1000,false,6);
+driveProfiled(4,2000,true,4);
+swing(200,1,500, false, 12);
+driveTo(10,1000,true,12);
+lift.setVelocity(100, pct);
+lift.spinToPosition(1000, deg);
+wait(100,msec);
+lift.spinToPosition(0, deg);
+claw1.spin(reverse, 12, volt);
+wait(50,msec);
+driveTo(-10, 1000, false, 12);
+turnProfiled(-130, 1000, false, 0);
+driveTo(30, 1000, false, 12);
+
+driveTo(30, 1700, false, 12);
+claw1.spin(fwd,100,pct);
+runAsync([]{swing(180, 1, 1000, true, 6);});
+
+wait(100,msec);
+claw1.stop();
+swing(-65,-1,1000,false,12);
+driveTo(9,500,true,12);
+
+*/
+
+
+
+
 }
 
 void exampleAuton2() {
- driveProfiled(15,2000,false,0);
- turnProfiled(-90,2000,false,0);
- driveProfiled(15,2000,true,0);
+//right red
+lift.spinToPosition(800, degrees); //placeholder
+wait(50, msec);
+lift.spinToPosition(0, degrees);
+curveCircle(-90, -15, 800, false, 12);
+lift.spinToPosition(0, degrees);
+claw1.spin(fwd, 12, volt);
+wait(90,msec);
+claw1.stop(hold);
+
+driveProfiled(-6, 400,false, 0);
+turnProfiled(220, 500, false,0);
+driveProfiled(4, 400,false, 0);
+runAsync([]{driveProfiled(8, 2500, true, 8);});
+waitUntilTraveled(5);
+claw1.spin(fwd, 12, volt);
+wait(100,msec);
+claw1.stop(hold);
+driveTo(-3.1, 500, false, 12);
+turnProfiled(90, 500, false, 0);
+driveProfiled(19, 2000, true, 0);
+driveTo(-3, 500, false, 12);
+turnProfiled(-45, 500, false, 0);
 
 
+driveProfiled(20, 1000, false, 0);
+
+runAsync([]{driveProfiled(9, 1000, true, 8);});
+ 
+waitUntilTraveled(5);
+claw1.spin(fwd, 12, volt);
+wait(100,msec);
+claw1.stop(hold);
+driveTo(5, 500, false, 12);
+
+turnProfiled(-90, 500, false, 0);
+
+runAsync([]{driveProfiled(8, 1000, true, 0);});
+waitUntilTraveled(3);
+lift.setVelocity(100, percent);
+claw1.spin(reverse, 12, volt);
+wait(50,msec);
+claw1.stop(hold);
+driveTo(-3.1, 500, false, 12);
+
+turnProfiled(220, 500, false, 0);
+
+driveProfiled(4, 400,false, 0);
+driveProfiled(9, 2500, true, 9);
  
 
 
@@ -33,7 +122,30 @@ void exampleAuton2() {
  * Shows background motions: start a move, run mechanisms while it drives, and stop it early with a sensor.
  */
 void asyncExample() {
+  //red right
+ lift.spinToPosition(800, degrees); //placeholder
+wait(50, msec);
+lift.spinToPosition(0, degrees);
+curveCircle(-90, -15, 800, false, 12);
+lift.spinToPosition(0, degrees);
+claw1.spin(fwd, 12, volt);
+wait(90,msec);
+claw1.stop(hold);
+
+driveProfiled(-15, 700,false, 0);
+turnProfiled(-45, 500, false, 0);
+
+
+driveProfiled(20, 1000, false, 0);
+runAsync([]{driveProfiled(10, 1000, true, 8);});
  
+waitUntilTraveled(5);
+claw1.spin(fwd, 12, volt);
+wait(100,msec);
+claw1.stop(hold);
+turnToAngle(190, 500, true, 12);
+driveTo(10, 500, true, 12);
+
 }
 
 /*
@@ -59,6 +171,8 @@ void profiledExample() {
   driveProfiled(24, 3000);
   turnProfiled(0, 2000);
   driveProfiled(-36, 3000);
+  lift.setVelocity(100, percent);
+  lift.spinToPosition(800, degrees);
 }
 
 double arm_pid_target = 0, arm_load_target = 60, arm_store_target = 250, arm_score_target = 470;
