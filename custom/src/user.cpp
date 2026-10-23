@@ -63,15 +63,15 @@ void runDriver() {
       if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
       else right_lift.stop(hold);
 
-    } else if (controller_1.ButtonL1.pressing()) {
-      left_lift.spin(reverse, 6, volt);
-      right_lift.spin(reverse, 6, volt);
+    } else if (controller_1.ButtonR2.pressing()) {
+      left_lift.spin(reverse, 4, volt);
+      right_lift.spin(reverse, 4, volt);
     } else {
       left_lift.stop(hold);
       right_lift.stop(hold);
     }
 
-    if(controller_1.ButtonR2.pressing()) {
+    if(controller_1.ButtonL1.pressing()) {
       claw1.spin(fwd, 6, volt);
     } else if (controller_1.ButtonL2.pressing()) {
       claw1.spin(reverse, 3, volt);
