@@ -102,8 +102,8 @@ void runPreAutonomous() {
   // startMcl();
 
   // Autonomous routines for the selector, in the order they appear on the Brain screen
-  addAuton("RightRed", exampleAuton);
-  addAuton("LeftRed", exampleAuton2);
+  addAuton("LeftRed", exampleAuton);
+  addAuton("RightRed", exampleAuton2);
   addAuton("Skills ", redGoalRush);
   addAuton("Async Example", asyncExample);
   addAuton("Path Example", pathExample);
