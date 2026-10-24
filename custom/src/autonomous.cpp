@@ -51,15 +51,16 @@ claw1.spin(reverse, 12, volt);
 wait(50,msec);
 claw1.stop(coast);
 turnToAngle(180,500,true, 12);
-driveTo(-5, 1000, false, 12);
-turnToAngle(-134,1000,true,12);
-driveTo(33, 1400, false, 12);
+driveTo(-4, 1000, false, 12);
+turnToAngle(-135,1000,true,12);
+driveTo(25, 1400, false, 10);
 
-
-swing(170,1,1000,true, 5);
 claw1.spin(fwd,100,pct);
+driveProfiled(10, 1000, false,8);
+driveProfiled(10 ,1000, true, 8);
+lift.setVelocity(100,pct);
+lift.spinToPosition(800,deg);
 
-driveProfiled(28, 1700, false, 5);
 
 
 
