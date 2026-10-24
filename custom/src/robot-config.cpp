@@ -80,15 +80,15 @@ double turn_kp = 0.3, turn_ki = 0, turn_kd = 2.19;
 double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels
-bool using_horizontal_tracker = false;  // Set to true if a horizontal tracking wheel is installed and used for odometry
+bool using_horizontal_tracker = true;  // Set to true if a horizontal tracking wheel is installed and used for odometry
 bool using_vertical_tracker = false;   // Set to true if a vertical tracking wheel is installed and used for odometry
 
 // IGNORE THESE IF YOU ARE NOT USING TRACKING WHEELS
 // These comments are in the perspective of a top down view of the robot when the robot is facing vertical
 // Vertical distance from the center of the bot to the horizontal tracking wheel (in inches, positive is when the wheel is behind the center)
-double horizontal_tracker_dist_from_center = 2.71875;
+double horizontal_tracker_dist_from_center = 0.0;
 // Horizontal distance from the center of the bot to the vertical tracking wheel (in inches, positive is when the wheel is to the right of the center)
-double vertical_tracker_dist_from_center = -0.03125;
+double vertical_tracker_dist_from_center = 0.0;
 double horizontal_tracker_diameter = 1.975; // Diameter of the horizontal tracker wheel (in inches)
 double vertical_tracker_diameter = 1.975; // Diameter of the vertical tracker wheel (in inches)
 
@@ -190,8 +190,8 @@ double path_lookahead = 12;            // Pure pursuit lookahead (inches): bigge
 double path_max_lateral_accel = 120;   // Slows down in curves so the robot doesn't slide (in/s^2)
 
 // Driver control feel, used by driverTank() and driverArcade()
-double driver_curve = 2;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
-double driver_deadband = 2;  // Stick values below this (percent) count as zero
+double driver_curve = 4;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
+double driver_deadband = 0;  // Stick values below this (percent) count as zero
 
 // ============================================================================
 // DO NOT CHANGE ANYTHING BELOW

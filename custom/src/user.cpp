@@ -72,7 +72,7 @@ void runDriver() {
     }
 
     if(controller_1.ButtonL1.pressing()) {
-      claw1.spin(fwd, 6, volt);
+      claw1.spin(fwd, 40, volt);
     } else if (controller_1.ButtonL2.pressing()) {
       claw1.spin(reverse, 3, volt);
     }else {
