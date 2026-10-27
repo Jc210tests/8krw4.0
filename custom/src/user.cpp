@@ -24,7 +24,7 @@ int chassis_flag = 0;
 void runDriver() {
   stopChassis(coast);
   heading_correction = false;
-    const double liftMaxDeg = 2000; 
+    const double liftMaxDeg = 1700; 
 
   while (true) {
     // [-100, 100] for controller stick axis values
@@ -56,16 +56,16 @@ void runDriver() {
     double leftPos = left_lift.position(deg);
     double rightPos = right_lift.position(deg);
 
-    if (controller_1.ButtonR1.pressing()) {
+    if (controller_1.ButtonR2.pressing()) {
       if (leftPos < liftMaxDeg) left_lift.spin(fwd, 12, volt);
       else left_lift.stop(hold);
 
       if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
       else right_lift.stop(hold);
 
-    } else if (controller_1.ButtonR2.pressing()) {
-      left_lift.spin(reverse, 4, volt);
-      right_lift.spin(reverse, 4, volt);
+    } else if (controller_1.ButtonR1.pressing()) {
+      left_lift.spin(reverse, 6, volt);
+      right_lift.spin(reverse, 6, volt);
     } else {
       left_lift.stop(hold);
       right_lift.stop(hold);
@@ -74,7 +74,7 @@ void runDriver() {
     if(controller_1.ButtonL1.pressing()) {
       claw1.spin(fwd, 40, volt);
     } else if (controller_1.ButtonL2.pressing()) {
-      claw1.spin(reverse, 3, volt);
+      claw1.spin(reverse, 6, volt);
     }else {
       claw1.stop(hold);
     }

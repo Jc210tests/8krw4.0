@@ -32,14 +32,14 @@ inertial inertial_sensor = inertial(PORT7);
 optical example_optical_sensor = optical(PORT8);
 distance example_distance_sensor = distance(PORT9);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
-motor right_lift = motor(PORT8, ratio6_1, false);
-motor left_lift = motor(PORT9, ratio6_1, true);
+motor right_lift = motor(PORT8, ratio36_1, false);
+motor left_lift = motor(PORT9, ratio36_1, true);
 motor_group lift = motor_group(left_lift, right_lift);
 
 motor claw1 = motor(PORT10, ratio6_1, false);
 // Format is rotation(port, reversed)
 // just set these to random ports if you don't use tracking wheels
-rotation horizontal_tracker = rotation(PORT8, true);
+rotation horizontal_tracker = rotation(PORT20, false);
 rotation vertical_tracker = rotation(PORT8, true);
 
 // Distance reset sensors
@@ -190,7 +190,7 @@ double path_lookahead = 12;            // Pure pursuit lookahead (inches): bigge
 double path_max_lateral_accel = 120;   // Slows down in curves so the robot doesn't slide (in/s^2)
 
 // Driver control feel, used by driverTank() and driverArcade()
-double driver_curve = 4;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
+double driver_curve = 0;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
 double driver_deadband = 0;  // Stick values below this (percent) count as zero
 
 // ============================================================================
