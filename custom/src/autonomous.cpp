@@ -15,54 +15,82 @@
 
 void exampleAuton()
 {
-  // redleft
-  claw1.spin(fwd,50,pct);
+  // skills
+const double heights[] = {250, 390, 490, 590, 590};
+
   lift.setVelocity(100,pct);
-  lift.spinToPosition(200,deg);
-moveToPoint(0,5.96,2,500,false,12);
-swing(90,1,400,false, 10);
+  lift.spinToPosition(150,deg);
+driveTo(4,1000,false,12);
+swing(90,1,400,false, 12);
 driveProfiled(5,1000,true,0);
 lift.setVelocity(40,pct);
-lift.spinToPosition(60,deg);
-wait(10,msec);
-claw1.spin(reverse, 5, volt);
+lift.spinToPosition(35,deg);
+wait(100,msec);
+claw1.spin(reverse, 9, volt);//pin1
 wait(150,msec);
-runAsync([]{driveProfiled(-21,1000,true,0);});
-waitUntilTraveled(4);
-lift.spinToPosition(0,deg);
-turnToPoint(-15.97,2.255,1,1000);
+//goal
+turnToAngle(90,1999,true, 12);
+setPose(6.4,14.5,90);
+
+for(int i = 0; i<4; i++){
+  
+//runAsync([]{driveProfiled(-23,1050,true,0);});
+//waitUntilTraveled(4);
+//lift.spinToPosition(10,deg);
+//turnToPoint(-17.4,2.255,1,1000);
+driveProfiled(-5,1000,false,0.0);
+lift.spinToPosition(20,deg);
+driveProfiled(-20,1000,true,0.0);
 claw1.spin(fwd,12,volt);
-moveToPoint(-16.7,2.955,1,1000,false,4);
-driveProfiled(-5,1000,false,5);
-moveToPoint(-16.785,15.162,-1,1000, true,12);
-turnToPoint(17.68,15.384,1,1000);
+turnProfiled(180,1000,true,0.0);
+
+lift.setVelocity(90,pct);
+ lift.spinToPosition(0,deg);
+driveProfiled(10.5,800,true, 0.0);
+wait(250,msec);
+
+//matchloader
 
 
 
 
+driveProfiled(-10.5,1000,true, 0.0);
+
+
+turnProfiled(90,1000, true, 0.0);
+
+
+runAsync([]{driveProfiled(15,1000,false, 0.0);});
+lift.setVelocity(100,pct);
+ lift.spinToPosition(heights[i],deg);
+
+driveTo(22,500,true,5);
 
 
 
+lift.setTimeout(500,msec);
+ lift.setVelocity(55,pct);
 
 
-  /*
+wait(150,msec);
+
+ lift.spinToPosition(heights[i] - 100,deg);
+  claw1.spin(reverse,100,pct);
+  lift.setTimeout(10,sec);
 
 
 
+}
+lift.spinToPosition(0,deg);
+driveProfiled(-10,800,false,0.0);
+turnProfiled(45,100,false,0.0);
+driveProfiled(30,1000,false,0.0);
+swing(168,1,1000,true,12);
+claw1.spin(reverse,100,pct);
+driveProfiled(40,1000,true,0.0);
+turnProfiled(210,100,false,0.0);
+driveProfiled(-30,1000,true,0.0);
 
-
-
-
-
-  claw1.spin(fwd,100,pct);
-  runAsync([]{swing(180, 1, 1000, true, 6);});
-
-  wait(100,msec);
-  claw1.stop();
-
-  driveTo(9,500,true,12);
-
-  */
 }
 void asyncExample()
 
