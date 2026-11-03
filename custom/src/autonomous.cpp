@@ -40,12 +40,16 @@ for(int i = 0; i<4; i++){
 //turnToPoint(-17.4,2.255,1,1000);
 driveProfiled(-5,1000,false,0.0);
 lift.spinToPosition(20,deg);
-driveProfiled(-20,1000,true,0.0);
-claw1.spin(fwd,22,volt);
-turnProfiled(180,1000,true,0.0);
+runAsync([]{driveProfiled(-20,1000,true,0.0);});
 
+claw1.spin(fwd,22,volt);
 lift.setVelocity(90,pct);
  lift.spinToPosition(0,deg);
+
+turnProfiled(180,1000,true,0.0);
+
+
+
   wholetthisnerdcodedistancesensors(10.2,1000,front_sensor, true, 5);
 wait(250,msec);
 
@@ -82,15 +86,25 @@ wait(150,msec);
 
 
 }
+
+
+runAsync([]{
+  
+  (-10,800,false,0.0);
+
+}); 
+
+
 lift.spinToPosition(0,deg);
-driveProfiled(-10,800,false,0.0);
 turnProfiled(45,100,false,0.0);
 driveProfiled(30,1000,false,0.0);
 swing(168,1,1000,true,12);
-claw1.spin(reverse,100,pct);
-driveProfiled(40,1000,false,0.0);
+claw1.spin(reverse,5,volt);
+driveProfiled(50,1300,false,0.0);
 turnProfiled(210,100,false,0.0);
 driveProfiled(-30,1000,true,0.0);
+
+
 
 }
 void asyncExample()

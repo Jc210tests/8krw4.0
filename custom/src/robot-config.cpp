@@ -186,7 +186,7 @@ double profile_max_speed = 0;          // Top speed (in/s, 0 = 80% of the drive'
 double profile_max_accel = 60;        // Speed up / slow down rate (in/s^2): lower if the wheels slip
 double profile_turn_speed = 360;       // turnProfiled top speed (degrees/s)
 double profile_turn_accel = 1200;      // turnProfiled acceleration (degrees/s^2)
-double path_lookahead = 12;            // Pure pursuit lookahead (inches): bigger = smoother, smaller = tighter
+double path_lookahead = 11;            // Pure pursuit lookahead (inches): bigger = smoother, smaller = tighter
 double path_max_lateral_accel = 120;   // Slows down in curves so the robot doesn't slide (in/s^2)
 
 // Driver control feel, used by driverTank() and driverArcade()
