@@ -46,7 +46,7 @@ turnProfiled(180,1000,true,0.0);
 
 lift.setVelocity(90,pct);
  lift.spinToPosition(0,deg);
-driveProfiled(9,1000,true, 0.0);
+  wholetthisnerdcodedistancesensors(10.2,1000,front_sensor, true, 5);
 wait(250,msec);
 
 //matchloader
@@ -61,10 +61,11 @@ turnToAngle(90,1000,true,12);
 
 
 runAsync([]{driveProfiled(15,1000,false, 0.0);});
+
 lift.setVelocity(100,pct);
  lift.spinToPosition(heights[i],deg);
 
- driveTo(22,500,true,5);
+ driveTo(22,400,true,4);
 
 
 
@@ -307,6 +308,6 @@ void intakeThread()
  */
 void redGoalRush()
 {
-  wholetthisnerdcodedistancesensors(10,1000,front_sensor, false);
+  wholetthisnerdcodedistancesensors(10,1000,front_sensor, true, 6);
   // Slow drive forward
 }
