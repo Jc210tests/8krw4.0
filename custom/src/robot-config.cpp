@@ -44,7 +44,7 @@ rotation vertical_tracker = rotation(PORT15, true);
 
 // Distance reset sensors
 // Set these to random ports if you are not using distance resets
-distance front_sensor = distance(PORT15);
+distance front_sensor = distance(PORT21);
 distance left_sensor = distance(PORT15);
 distance right_sensor = distance(PORT15);
 distance back_sensor = distance(PORT15);

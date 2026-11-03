@@ -37,6 +37,7 @@ double normalizeTarget(double angle);
 
 void turnToAngle(double turn_angle, double time_limit_msec, bool exit = true, double max_output = 12);
 void driveTo(double distance_in, double time_limit_msec, bool exit = true, double max_output = 12);
+void wholetthisnerdcodedistancesensors(double distance_from_wall_in, double time_limit_msec, vex::distance& wall_sensor, bool exit = true, double max_output = 12);
 void curveCircle(double result_angle_deg, double center_radius, double time_limit_msec, bool exit = true, double max_output = 12);
 void swing(double swing_angle, double drive_direction, double time_limit_msec, bool exit = true, double max_output = 12);
 

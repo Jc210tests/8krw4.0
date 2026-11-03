@@ -20,9 +20,9 @@ const double heights[] = {250, 390, 490, 590, 590};
 
   lift.setVelocity(100,pct);
   lift.spinToPosition(150,deg);
-driveTo(4,1000,false,12);
-swing(90,1,400,false, 12);
-driveProfiled(5,1000,true,0);
+driveTo(3.5,1000,false,12);
+swing(90,1,400,false, 10);
+driveProfiled(5,1000,true,0.0);
 lift.setVelocity(40,pct);
 lift.spinToPosition(35,deg);
 wait(100,msec);
@@ -30,7 +30,7 @@ claw1.spin(reverse, 9, volt);//pin1
 wait(150,msec);
 //goal
 turnToAngle(90,1999,true, 12);
-setPose(6.4,14.5,90);
+
 
 for(int i = 0; i<4; i++){
   
@@ -41,12 +41,12 @@ for(int i = 0; i<4; i++){
 driveProfiled(-5,1000,false,0.0);
 lift.spinToPosition(20,deg);
 driveProfiled(-20,1000,true,0.0);
-claw1.spin(fwd,12,volt);
+claw1.spin(fwd,22,volt);
 turnProfiled(180,1000,true,0.0);
 
 lift.setVelocity(90,pct);
  lift.spinToPosition(0,deg);
-driveProfiled(10.5,800,true, 0.0);
+driveProfiled(9,1000,true, 0.0);
 wait(250,msec);
 
 //matchloader
@@ -54,17 +54,17 @@ wait(250,msec);
 
 
 
-driveProfiled(-10.5,1000,true, 0.0);
+driveProfiled(-9,1000,true, 0.0);
 
 
-turnProfiled(90,1000, true, 0.0);
+turnToAngle(90,1000,true,12);
 
 
 runAsync([]{driveProfiled(15,1000,false, 0.0);});
 lift.setVelocity(100,pct);
  lift.spinToPosition(heights[i],deg);
 
-driveTo(22,500,true,5);
+ driveTo(22,500,true,5);
 
 
 
@@ -75,7 +75,7 @@ lift.setTimeout(500,msec);
 wait(150,msec);
 
  lift.spinToPosition(heights[i] - 100,deg);
-  claw1.spin(reverse,100,pct);
+  claw1.spin(reverse,60,pct);
   lift.setTimeout(10,sec);
 
 
@@ -87,7 +87,7 @@ turnProfiled(45,100,false,0.0);
 driveProfiled(30,1000,false,0.0);
 swing(168,1,1000,true,12);
 claw1.spin(reverse,100,pct);
-driveProfiled(40,1000,true,0.0);
+driveProfiled(40,1000,false,0.0);
 turnProfiled(210,100,false,0.0);
 driveProfiled(-30,1000,true,0.0);
 
@@ -307,5 +307,6 @@ void intakeThread()
  */
 void redGoalRush()
 {
+  wholetthisnerdcodedistancesensors(10,1000,front_sensor, false);
   // Slow drive forward
 }

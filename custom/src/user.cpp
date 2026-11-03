@@ -11,7 +11,9 @@
 void runAutonomous() {
   // Runs the routine picked on the Brain screen (or with the controller arrows while disabled).
   // Add routines to the list in runPreAutonomous() below.
-  exampleAuton();
+  // exampleAuton();
+  redGoalRush();
+  
 }
 
 // controller_1 input variables (snake_case)
