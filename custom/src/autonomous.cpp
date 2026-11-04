@@ -15,7 +15,7 @@
 
 void exampleAuton()
 {
-  // skills
+  //skills
 const double heights[] = {250, 390, 490, 590, 590};
 
   lift.setVelocity(100,pct);
@@ -29,7 +29,7 @@ wait(100,msec);
 claw1.spin(reverse, 9, volt);//pin1
 wait(150,msec);
 //goal
-turnToAngle(90,1999,true, 12);
+turnToAngle(90,100,true, 12);
 
 
 for(int i = 0; i<4; i++){
@@ -38,19 +38,15 @@ for(int i = 0; i<4; i++){
 //waitUntilTraveled(4);
 //lift.spinToPosition(10,deg);
 //turnToPoint(-17.4,2.255,1,1000);
-driveProfiled(-5,1000,false,0.0);
+
 lift.spinToPosition(20,deg);
-runAsync([]{driveProfiled(-20,1000,true,0.0);});
-
-claw1.spin(fwd,22,volt);
-lift.setVelocity(90,pct);
- lift.spinToPosition(0,deg);
-
+driveProfiled(-22,1000,true,0.0);
+claw1.spin(fwd,50,volt);
 turnProfiled(180,1000,true,0.0);
 
-
-
-  wholetthisnerdcodedistancesensors(10.2,1000,front_sensor, true, 5);
+lift.setVelocity(90,pct);
+ lift.spinToPosition(0,deg);
+  wholetthisnerdcodedistancesensors(11.5,1000,front_sensor, true, 4);
 wait(250,msec);
 
 //matchloader
@@ -58,18 +54,19 @@ wait(250,msec);
 
 
 
-driveProfiled(-9,1000,true, 0.0);
 
+driveProfiled(-8,1000,true, 0.0);
 
 turnToAngle(90,1000,true,12);
-
-
-runAsync([]{driveProfiled(15,1000,false, 0.0);});
 
 lift.setVelocity(100,pct);
  lift.spinToPosition(heights[i],deg);
 
- driveTo(22,400,true,4);
+driveProfiled(18,950,false, 0.0);
+
+
+
+ driveTo(20,400,true,4);
 
 
 
@@ -79,31 +76,32 @@ lift.setTimeout(500,msec);
 
 wait(150,msec);
 
- lift.spinToPosition(heights[i] - 100,deg);
-  claw1.spin(reverse,60,pct);
+ lift.spinToPosition(heights[i] - 110,deg);
+  claw1.spin(reverse,6,pct);
   lift.setTimeout(10,sec);
 
 
 
 }
 
-
-runAsync([]{
-  
-  (-10,800,false,0.0);
-
-}); 
-
-
+setPose(0,0,90);
 lift.spinToPosition(0,deg);
+driveProfiled(-7,800,false,0.0);
 turnProfiled(45,100,false,0.0);
-driveProfiled(30,1000,false,0.0);
-swing(168,1,1000,true,12);
-claw1.spin(reverse,5,volt);
-driveProfiled(50,1300,false,0.0);
-turnProfiled(210,100,false,0.0);
-driveProfiled(-30,1000,true,0.0);
-
+driveProfiled(22,1000,false,0.0);
+swing(180,1,1000,true,12);
+claw1.spin(reverse,100,pct);
+driveProfiled(50,1200,false,0.0);
+wait(10,msec);
+driveProfiled(-3,1000,false,0.0);
+driveProfiled(4,1000,false,0.0);
+turnProfiled(220,100,false,0.0);
+driveProfiled(-60,1300,false,0.0);
+turnProfiled(140,1000,false,0.0);
+driveProfiled(44,1200,true,0.0);
+turnToAngle(180,1000,true,12);
+claw1.spin(fwd,100,pct);
+driveProfiled(10,1000,true,0.0);
 
 
 }
