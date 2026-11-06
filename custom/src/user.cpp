@@ -80,8 +80,12 @@ void runDriver() {
     }else {
       claw1.stop(hold);
     }
+  if(controller_1.ButtonDown.pressing()) {
+  lift.setVelocity(100,pct);
+    lift.spinToPosition(0, deg);
     wait(10, msec); 
   }
+}
 }
 
 void runPreAutonomous() {
