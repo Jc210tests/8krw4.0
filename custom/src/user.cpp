@@ -12,10 +12,24 @@ void runAutonomous() {
   // Runs the routine picked on the Brain screen (or with the controller arrows while disabled).
   // Add routines to the list in runPreAutonomous() below.
   // exampleAuton();
-  exampleAuton();
+
+redGoalRush();
   
 }
+bool chud = false;
+int downtask() {
+  while(true){
 
+  if (controller_1.ButtonA.pressing()) {
+      lift.setVelocity(100, pct);
+      lift.spinToPosition(0, deg);
+      chud = true; 
+  } else{
+    chud = false; 
+  }
+  }
+
+}
 // controller_1 input variables (snake_case)
 int ch1, ch2, ch3, ch4;
 bool l1, l2, r1, r2;
@@ -27,8 +41,10 @@ void runDriver() {
   stopChassis(coast);
   heading_correction = false;
     const double liftMaxDeg = 1700; 
-
+// thread t(downtask);
+  task t = task(downtask);
   while (true) {
+
     // [-100, 100] for controller stick axis values
     ch1 = controller_1.Axis1.value();
     ch2 = controller_1.Axis2.value();
@@ -60,15 +76,15 @@ void runDriver() {
 
     if (controller_1.ButtonR2.pressing()) {
       if (leftPos < liftMaxDeg) left_lift.spin(fwd, 12, volt);
-      else left_lift.stop(hold);
+      else if(!chud) left_lift.stop(hold);
 
       if (rightPos < liftMaxDeg) right_lift.spin(fwd, 12, volt);
-      else right_lift.stop(hold);
+      else if(!chud) right_lift.stop(hold);
 
     } else if (controller_1.ButtonR1.pressing()) {
       left_lift.spin(reverse, 6, volt);
       right_lift.spin(reverse, 6, volt);
-    } else {
+    } else if (!chud){
       left_lift.stop(hold);
       right_lift.stop(hold);
     }
@@ -76,17 +92,15 @@ void runDriver() {
     if(controller_1.ButtonL1.pressing()) {
       claw1.spin(fwd, 40, volt);
     } else if (controller_1.ButtonL2.pressing()) {
-      claw1.spin(reverse, 4.5, volt);
+      claw1.spin(reverse, 5, volt);
     }else {
       claw1.stop(hold);
     }
-  if(controller_1.ButtonDown.pressing()) {
-  lift.setVelocity(100,pct);
-    lift.spinToPosition(0, deg);
-    wait(10, msec); 
+
+  wait(10, msec);
   }
 }
-}
+
 
 void runPreAutonomous() {
     // Initializing Robot Configuration. DO NOT REMOVE!
@@ -99,6 +113,9 @@ void runPreAutonomous() {
   while (inertial_sensor.isCalibrating()) {
     wait(10, msec);
   }
+  lift.setPosition(0,deg);
+  left_lift.setPosition(0,deg);
+  right_lift.setPosition(0,deg);
 
   // odom tracking (picks the setup from using_horizontal_tracker / using_vertical_tracker)
   startOdometry();

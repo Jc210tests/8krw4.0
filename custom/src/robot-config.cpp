@@ -34,7 +34,7 @@ distance example_distance_sensor = distance(PORT15);
 digital_out example_piston = digital_out(Brain.ThreeWirePort.A);
 motor right_lift = motor(PORT8, ratio36_1, false);
 motor left_lift = motor(PORT9, ratio36_1, true);
-motor_group lift = motor_group(left_lift, right_lift);
+motor_group lift = motor_group(right_lift, left_lift);
 
 motor claw1 = motor(PORT10, ratio6_1, false);
 // Format is rotation(port, reversed)
@@ -144,7 +144,7 @@ double chase_power = 2;
 
 // Multiplies the IMU heading. Many V5 IMUs read a little off over full turns (e.g. 357 for 360).
 // Find yours with measureImuScale(), 1.0 = no correction
-double imu_scale = 1.0;
+double imu_scale = 360.0/ 354.6;
 
 // End a motion early once the robot has been stuck (not moving or turning) for this long, in msec.
 // Saves time if the robot gets caught on something. 0 = off.

@@ -601,7 +601,8 @@ void wholetthisnerdcodedistancesensors(double distance_from_wall_in, double time
     }
 
     distance_from_wall_in = (start_distance - distance_from_wall_in) * drive_direction; 
-    PID pid_distance = PID(distance_kp, distance_ki, distance_kd);
+    // PID pid_distance = PID(distance_kp, distance_ki, distance_kd);
+    PID pid_distance = PID(0.9, distance_ki, distance_kd);
     PID pid_heading = PID(heading_correction_kp, heading_correction_ki, heading_correction_kd);
 
     // Configure PID controllers
