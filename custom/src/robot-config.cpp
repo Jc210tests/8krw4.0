@@ -47,7 +47,7 @@ rotation vertical_tracker = rotation(PORT15, true);
 distance front_sensor = distance(PORT21);
 distance left_sensor = distance(PORT15);
 distance right_sensor = distance(PORT15);
-distance back_sensor = distance(PORT15);
+distance back_sensor = distance(PORT16);
 
 // game specific devices for high stakes
 // motor arm_motor1 = motor(PORT16, ratio18_1, true);
@@ -76,7 +76,7 @@ double wheel_distance_in = (36.0 / 48.0) * 2.5 * M_PI;
 // turn_*     : PID for turning in place
 // heading_correction_* : PID for heading correction during linear movement
 double distance_kp = 0.995, distance_ki = 0.1, distance_kd = 0.062;
-double turn_kp = 0.3, turn_ki = 0, turn_kd = 2.19;
+double turn_kp = 0.29, turn_ki = 0, turn_kd = 2.19;
 double heading_correction_kp = 0.19, heading_correction_ki = 0, heading_correction_kd = 0.02;
 
 // Enable or disable the use of tracking wheels
@@ -144,7 +144,7 @@ double chase_power = 2;
 
 // Multiplies the IMU heading. Many V5 IMUs read a little off over full turns (e.g. 357 for 360).
 // Find yours with measureImuScale(), 1.0 = no correction
-double imu_scale = 360.0/ 354.6;
+double imu_scale = 360.0/ 354.6 ;
 
 // End a motion early once the robot has been stuck (not moving or turning) for this long, in msec.
 // Saves time if the robot gets caught on something. 0 = off.
@@ -191,7 +191,7 @@ double path_max_lateral_accel = 120;   // Slows down in curves so the robot does
 
 // Driver control feel, used by driverTank() and driverArcade()
 double driver_curve = 0;     // 0 = linear, higher = finer control at low stick values (2-6 is typical)
-double driver_deadband = 0;  // Stick values below this (percent) count as zero
+double driver_deadband = 1;  // Stick values below this (percent) count as zero
 
 // ============================================================================
 // DO NOT CHANGE ANYTHING BELOW

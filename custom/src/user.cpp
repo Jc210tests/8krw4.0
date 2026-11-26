@@ -13,9 +13,27 @@ void runAutonomous() {
   // Add routines to the list in runPreAutonomous() below.
   // exampleAuton();
 
-redGoalRush();
+asyncExample();
   
 }
+
+
+const double heightmacro[] = {100, 200, 300, 400, 500};
+int a = 0;
+int liftMacro() {
+  while(true){
+  if(controller_1.ButtonX.pressing()){
+      a++;
+      if(a >= 5){
+        a = 0;
+      }
+        lift.spinToPosition(heightmacro[a], deg);
+    }
+    wait(10,msec);
+  }
+
+}
+
 bool chud = false;
 int downtask() {
   while(true){
@@ -27,6 +45,7 @@ int downtask() {
   } else{
     chud = false; 
   }
+  wait(10,msec);
   }
 
 }
@@ -38,11 +57,13 @@ bool button_up_arrow, button_down_arrow, button_left_arrow, button_right_arrow;
 int chassis_flag = 0;
 
 void runDriver() {
+ 
   stopChassis(coast);
   heading_correction = false;
     const double liftMaxDeg = 1700; 
 // thread t(downtask);
   task t = task(downtask);
+  task c = task(liftMacro);
   while (true) {
 
     // [-100, 100] for controller stick axis values
@@ -82,8 +103,8 @@ void runDriver() {
       else if(!chud) right_lift.stop(hold);
 
     } else if (controller_1.ButtonR1.pressing()) {
-      left_lift.spin(reverse, 6, volt);
-      right_lift.spin(reverse, 6, volt);
+      left_lift.spin(reverse, 9, volt);
+      right_lift.spin(reverse, 9, volt);
     } else if (!chud){
       left_lift.stop(hold);
       right_lift.stop(hold);
@@ -92,11 +113,13 @@ void runDriver() {
     if(controller_1.ButtonL1.pressing()) {
       claw1.spin(fwd, 40, volt);
     } else if (controller_1.ButtonL2.pressing()) {
-      claw1.spin(reverse, 5, volt);
+      claw1.spin(reverse, 10, volt);
     }else {
       claw1.stop(hold);
     }
 
+
+    
   wait(10, msec);
   }
 }
@@ -128,7 +151,7 @@ void runPreAutonomous() {
   addAuton("LeftRed", exampleAuton);
   addAuton("RightRed", exampleAuton2);
   addAuton("Skills ", redGoalRush);
-  addAuton("Async Example", asyncExample);
+  addAuton("AsyncExample", asyncExample);
   addAuton("Path Example", pathExample);
   addAuton("ProfiledExample", profiledExample);
   addAuton("Drive Calibration", calibrateDrive);  // For the simulator (see README)
