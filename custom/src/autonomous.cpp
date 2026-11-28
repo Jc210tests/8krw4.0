@@ -167,110 +167,146 @@ driveProfiled(-60,1300,true,0.0);
 void asyncExample()
 //skills 2
 {
-// const double heights1[] = {480, 590, 600};
-//   task z(liftTask);
-//   liftt = 150;
-//   claw1.spin(fwd,10,volt);
-// turnToAngle(58,100,false,12);
-// driveProfiled(10,1000,false,0.0);
-// driveProfiled(13,1000,true,20);
+const double heights1[] = {480, 590, 600};
+const double heights2[] = {150, 250, 450};
+
+lift.spinToPosition(40,deg);
+wait(50,msec);
+
+driveProfiled(2,500,false,0.0);
+driveProfiled(-1.5,500,false,0.0);
+
+  
+  claw1.spin(fwd,10,volt);
+
+  task z(liftTask);
+  liftt = 150;
+turnToAngle(58,100,false,12);
+driveProfiled(10,1000,false,0.0);
+driveProfiled(13,1000,true,20);
 
  
 
-// lift.spinToPosition(0,deg);
-//   claw1.spin(reverse,10,volt);
-//   wait(20,msec);
+lift.spinToPosition(0,deg);
+  claw1.spin(reverse,10,volt);
+  wait(20,msec);
 
-//   // turnToAngle(90,100,false,12);
+  // turnToAngle(90,100,false,12);
 
-//   driveProfiled(-3.5,1000,false,0.0);
-//   turnToAngle(15,100,false,12);
-//   driveProfiled(7.5,1000,false,0.0);
-// turnToAngle(45,100,false,10);
-// claw1.spin(fwd,10,volt);
+  driveProfiled(-6.2,1000,false,0.0);
+  turnToAngle(15,100,false,12);
+  driveProfiled(7.1,1000,false,0.0);
+turnToAngle(45,100,false,10);
+claw1.spin(fwd,10,volt);
   
    
-//   driveProfiled(18,1300,false,18);
-//   lift.spinToPosition(50,deg);
-//    task w = task(liftTask);
-//   liftt = 250;
-//   driveProfiled(3,200,true,0.0);
-//   wait(200,msec);
+  driveProfiled(22.25,1300,false,18);
+  lift.spinToPosition(50,deg);
+   task w = task(liftTask);
+  liftt = 250;
+
+  wait(200,msec);
   
-// turnToAngle(180,1000,3);
-// driveProfiled(26,1000,true,20);
-// lift.setVelocity(40,pct);
-// lift.spinToPosition(0,deg);
-// lift.setVelocity(100,pct);
-// claw1.spin(reverse,10,volt);
-// driveProfiled(-8.3,1000,false,0.0);
-// turnToAngle(135,100,false,10);
-// claw1.spin(fwd,10, volt);
-// driveProfiled(28,1300,false,20);
-// lift.spinToPosition(50,deg);
-// task g = task(liftTask);
-// liftt = 400;
-// driveProfiled(10,100,true,0.0);
+turnToAngle(180,1000,3);
+correct_angle = 180;
+driveTo(27,1200,true,5);
+lift.setVelocity(40,pct);
+lift.spinToPosition(0,deg);
+lift.setVelocity(100,pct);
+claw1.spin(reverse,10,volt);
+turnProfiled(180,1000,true,0.0);
+driveProfiled(-5.2,1000,false,0.0);
+turnToAngle(135,100,false,10);
+claw1.spin(fwd,10, volt);
+driveProfiled(9,1370,false,0.0);
+driveProfiled(40,1000,false,10);
+wait(40,msec);
+lift.spinToPosition(30,deg);
+driveProfiled(8,1000,true,60);
+task g = task(liftTask);
+liftt = 400;
 
-// wait(40,msec);
+wait(40,msec);
 
-// turnProfiled(-90,1000,true, 0.0);
 
-// wait(10,msec);
-// driveProfiled(28,1000,true, 0.0);
-// wait(150,msec);
-// lift.spinToPosition(0,deg);
-// for(int i = 0; i<2; i++){
-//   task zero(liftTask);
-//   liftt = 0;
-//   driveProfiled(-21,1000,false, 0.0);
 
-// turnProfiled(180,1000,true,0.0);
-// claw1.spin(fwd,10,volt);
+turnProfiled(-90,1000,true, 0.0);
 
-// wholetthisnerdcodedistancesensors(9.5,1000,front_sensor, true, 4);
-// wait(100,msec);
-// driveProfiled(-1,1000,false,0.0);
-// task chudtask(liftTask);
-// lift.setVelocity(100,pct);
-// liftt = heights1[i];
+wait(10,msec);
+driveProfiled(27,1000,false, 30);
+correct_angle = -90;
+driveTo(8,1000,true,3);
+wait(150,msec);
+lift.setVelocity(50,pct);
+lift.spinToPosition(200,deg);
+for(int i = 0; i<2; i++){
+  task zero(liftTask);
+  liftt = 0;
+  
+wholetthisnerdcodedistancesensors(8,1000, back_sensor, true, 6);
 
-// driveProfiled(-5,1100,true,40);
-// turnProfiled(-90,2000,true,0.0);
 
-// driveProfiled(28, 2000, true, 35);
-// wait(100,msec);
-// lift.setVelocity(50,pct);
+turnProfiled(180,1000,true,0.0);
+claw1.spin(fwd,10,volt);
 
-// lift.spinToPosition(heights1[i]-120, deg);
-// claw1.spin(reverse, 5, volt);
+wholetthisnerdcodedistancesensors(9.5,1000,front_sensor, true, 4);
+wait(100,msec);
+driveProfiled(-4,1000,false,0.0);
+task chudtask(liftTask);
+liftt = heights1[i];
+lift.setVelocity(100,pct);
 
-// }
-setPose(0,0,-90);
+
+wholetthisnerdcodedistancesensors(15,100,front_sensor, true, 4);
+
+turnProfiled(-90,2000,true,0.0);
+
+driveProfiled(16, 2100, false, 0.0);
+correct_angle = -90;
+driveTo(10,1600,true,4); 
+wait(250,msec);
+lift.setVelocity(50,pct);
+
+lift.spinToPosition(heights1[i]-120, deg);
+claw1.spin(reverse, 5, volt);
+
+}
+//next
+
 task o = task(liftTask);
 liftt = 0;
-driveProfiled(-23,1000,true, 0.0);
+driveProfiled(-34,1000,true, 0.0);
 turnProfiled(180,1000,true,0.0);
 claw1.spin(fwd,1000,volt);
+wait(50,msec);
 
 driveProfiled(7,1000,false,0.0);
-for(int j = 0; j<2; j++){
+
+for(int j = 0; j<3; j++){
+  
+  driveProfiled(-1,1000,false,0.0);
   task up = task(liftTask);
-  liftt = 150;
-  driveProfiled(-10,1000,false,0.0);
-turnProfiled(-40,100,false,0.0);
-driveProfiled(1,200,false,0.0);
-swing(0,1,1000,true,12);
+    liftt = heights2[j];
+  driveProfiled(-9,1000,false,0.0);
+
+turnProfiled(-90,100,false,0.0);
+driveProfiled(3,1000,false,0.0);
+curveCircle(0,7,300,false,12);
   driveProfiled(13,1000,true,0.0);
-  lift.spinToPosition(0,deg);
+  lift.spinToPosition(heights2[j]-100,deg);
   claw1.spin(reverse,10,volt);
+    task dwon = task(liftTask);
+    liftt = 0;
   driveProfiled(-10,1000,false,0.0);
   turnProfiled(100,1000,false,0.0);
   driveProfiled(4,1000,false,0.0);
-  swing(180,1,1000,true,12);
+  turnProfiled(180,100,false,0.0);
+  claw1.spin(fwd,10,volt);
    driveProfiled(10,1000,false,0.0);
 }
-
+driveProfiled(-10,1000,false,0.0);
+turnProfiled(-45,100,false,0.0);
+driveProfiled(5,1000,false,0.0);
   
 }
 void exampleAuton2()
@@ -326,65 +362,12 @@ driveProfiled(-5,1000,false,0.0);
 void pathExample()
 {
  
-  lift.setVelocity(200,pct);
+driveTo(24,1000,true,12);
 
-  lift.spinToPosition(450, deg);
-  
 
-  wait(10, msec);
-  lift.setVelocity(50, pct);
-  lift.spinToPosition(100, deg);
-  claw1.spin(fwd, 50, volt);
-  curveCircle(90, 10, 500, true, 6);
 
-  driveProfiled(15, 1000, true, 0);
-  lift.setVelocity(60, pct);
-  lift.spinToPosition(-25, deg);
-  claw1.spin(reverse, 4, volt);
-  wait(550, msec);
-  claw1.stop(hold);
-  driveProfiled(-6, 1100, false, 0.0);
-  turnProfiled(45, 800, true, 0.0);
-  driveProfiled(11, 1100, false, 0.0);
-  claw1.spin(fwd, 12, volt);
-  driveProfiled(18, 1000, true, 8);
-  claw1.stop();
-  driveTo(2, 1000, true, 5);
-  turnProfiled(170, 1000, true, 0.0);
 
-  lift.setVelocity(100, pct);
-  lift.spinToPosition(300, deg);
-  driveTo(20, 1000, true, 4);
-  wait(50, msec);
-  lift.setVelocity(50, pct);
-  lift.spinToPosition(-20, deg);
-
-  claw1.spin(reverse, 12, volt);
-  wait(50, msec);
-  claw1.spin(reverse, 12, volt);
-  wait(50, msec);
-  claw1.stop(coast);
-  turnToAngle(180, 500, true, 12);
-  driveTo(-4, 1000, false, 12);
-  turnToAngle(-135, 1000, true, 12);
-  driveTo(25, 1400, false, 10);
-
-  claw1.spin(fwd, 100, pct);
-  driveProfiled(10, 1000, false, 8);
-  driveProfiled(10, 1000, true, 8);
-  lift.setVelocity(100, pct);
-  lift.spinToPosition(200, deg);
-
-  wait(50, msec);
-  claw1.stop(hold);
-
-  swing(-65, -1, 1000, false, 12);
-  runAsync([]
-           { driveTo(9, 500, true, 12); });
-  waitUntilTraveled(1);
-  lift.setVelocity(100, pct);
-  lift.spinToPosition(300, deg);
-  claw1.spin(reverse, 12, volt);
+// driveToWallDistance(12,2000, front_sensor, true, true, 8);
 
 }
 

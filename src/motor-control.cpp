@@ -573,107 +573,229 @@ void driveTo(double distance_in, double time_limit_msec, bool exit, double max_o
   endMotion();
 }
 
-void wholetthisnerdcodedistancesensors(double distance_from_wall_in, double time_limit_msec, vex::distance& wall_sensor, bool exit, double max_output) { 
-    double start_distance = wall_sensor.objectDistance(vex::distanceUnits::in); 
-    stopChassis(vex::brakeType::coast);
-    beginMotion();
-    double threshold = 0.5;
-    int drive_direction = start_distance > distance_from_wall_in ? 1 : -1; 
-    double max_slew_fwd = drive_direction > 0 ? max_slew_accel_fwd : max_slew_decel_rev;
-    double max_slew_rev = drive_direction > 0 ? max_slew_decel_fwd : max_slew_accel_rev;
-    bool min_speed = false;
-    if(!exit) {
-      // Adjust slew rates and min speed for chaining
-      if(!dir_change_start && dir_change_end) {
-        max_slew_fwd = drive_direction > 0 ? 24 : max_slew_decel_rev;
-        max_slew_rev = drive_direction > 0 ? max_slew_decel_fwd : 24;
-      }
-      if(dir_change_start && !dir_change_end) {
-        max_slew_fwd = drive_direction > 0 ? max_slew_accel_fwd : 24;
-        max_slew_rev = drive_direction > 0 ? 24 : max_slew_accel_rev;
-        min_speed = true;
-      }
-      if(!dir_change_start && !dir_change_end) {
-        max_slew_fwd = 24;
-        max_slew_rev = 24;
-        min_speed = true;
-      }
-    }
+void wholetthisnerdcodedistancesensors(
+    double target_gap, double time_limit_msec,
+    vex::distance& wall_sensor, bool exit, double max_output) {
+  beginMotion();
 
-    distance_from_wall_in = (start_distance - distance_from_wall_in) * drive_direction; 
-    // PID pid_distance = PID(distance_kp, distance_ki, distance_kd);
-    PID pid_distance = PID(0.8, distance_ki, .09);
-    PID pid_heading = PID(heading_correction_kp, heading_correction_ki, heading_correction_kd);
-
-    // Configure PID controllers
-    pid_distance.setTarget(distance_from_wall_in);
-    pid_distance.setIntegralMax(3);
-    pid_distance.setSmallBigErrorTolerance(threshold, threshold * 3);
-    pid_distance.setSmallBigErrorDuration(50, 250);
-    pid_distance.setDerivativeTolerance(5);
-
-    pid_heading.setTarget(normalizeTarget(correct_angle));
-    pid_heading.setIntegralMax(0);
-    pid_heading.setIntegralRange(1);
-    pid_heading.setSmallBigErrorTolerance(0, 0);
-    pid_heading.setSmallBigErrorDuration(0, 0);
-    pid_heading.setDerivativeTolerance(0);
-    pid_heading.setArrive(false);
-
-    double start_time = Brain.timer(msec);
-    double left_output = 0, right_output = 0, correction_output = 0;
-    double current_distance = 0, current_angle = 0;
-
-    // Main PID loop for driving straight
-    while (((!pid_distance.targetArrived()) && motionActive(start_time, time_limit_msec) && exit) || (exit == false && current_distance < distance_from_wall_in && motionActive(start_time, time_limit_msec))) { 
-      // Calculate current distance and heading
-      current_distance = (start_distance - wall_sensor.objectDistance(vex::distanceUnits::in)) * drive_direction; 
-      current_angle = getInertialHeading();
-      left_output = pid_distance.update(current_distance) * drive_direction *
-              ((&wall_sensor == &back_sensor) ? -1 : 1);
-      right_output = left_output;
-      correction_output = pid_heading.update(current_angle);
-
-      // Minimum Output Check
-      if(min_speed) {
-        scaleToMin(left_output, right_output, min_output);
-      }
-      if(!exit) {
-        left_output = 24 * drive_direction;
-        right_output = 24 * drive_direction;
-      }
-
-      left_output += correction_output;
-      right_output -= correction_output;
-
-      // Max Output Check
-      scaleToMax(left_output, right_output, max_output);
-
-      // Max Acceleration/Deceleration Check
-      if(prev_left_output - left_output > max_slew_rev) {
-        left_output = prev_left_output - max_slew_rev;
-      }
-      if(prev_right_output - right_output > max_slew_rev) {
-        right_output = prev_right_output - max_slew_rev;
-      }
-      if(left_output - prev_left_output > max_slew_fwd) {
-        left_output = prev_left_output + max_slew_fwd;
-      }
-      if(right_output - prev_right_output > max_slew_fwd) {
-        right_output = prev_right_output + max_slew_fwd;
-      }
-      prev_left_output = left_output;
-      prev_right_output = right_output;
-      driveChassis(left_output, right_output);
-      wait(10, msec);
-    }
-    if(exit) {
-      prev_left_output = 0;
-      prev_right_output = 0;
-      stopChassis(vex::hold);
-    }
+  auto stopDrive = [&] {
+    prev_left_output = 0;
+    prev_right_output = 0;
+    stopChassis(vex::hold);
     endMotion();
+  };
+
+  // V5 distance sensor range is 20–2000 mm.
+  constexpr double min_gap = 20.0 / 25.4;
+  constexpr double max_gap = 2000.0 / 25.4;
+  constexpr double tolerance = 0.5;
+
+  auto validGap = [&](double gap) {
+    return std::isfinite(gap) && gap >= min_gap && gap <= max_gap;
+  };
+
+  auto readGap = [&] {
+    if (!wall_sensor.isObjectDetected()) {
+      return -1.0;
+    }
+    return wall_sensor.objectDistance(vex::distanceUnits::in);
+  };
+
+  if (!validGap(target_gap) || !std::isfinite(time_limit_msec) ||
+      time_limit_msec <= 0 || !std::isfinite(max_output) ||
+      max_output <= 0) {
+    stopDrive();
+    return;
   }
+  max_output = std::fmin(max_output, 12.0);
+
+  const double start_gap = readGap();
+  if (!validGap(start_gap) ||
+      std::fabs(start_gap - target_gap) <= tolerance) {
+    stopDrive();
+    return;
+  }
+
+  const int gap_direction = start_gap > target_gap ? 1 : -1;
+  const int sensor_direction = &wall_sensor == &back_sensor ? -1 : 1;
+  const int drive_direction = gap_direction * sensor_direction;
+  const double travel_target = std::fabs(start_gap - target_gap);
+
+  double rise_limit = drive_direction > 0 ? max_slew_accel_fwd : max_slew_decel_rev;
+  double fall_limit = drive_direction > 0 ? max_slew_decel_fwd : max_slew_accel_rev;
+
+  if (!exit) {
+    if (drive_direction > 0 ? !dir_change_start : !dir_change_end) {
+      rise_limit = 24;
+    }
+    if (drive_direction > 0 ? !dir_change_end : !dir_change_start) {
+      fall_limit = 24;
+    }
+  }
+
+  PID distance_pid(0.8, distance_ki, 0.09);
+  distance_pid.setTarget(travel_target);
+  distance_pid.setIntegralMax(3);
+  distance_pid.setSmallBigErrorTolerance(tolerance, tolerance * 3);
+  distance_pid.setSmallBigErrorDuration(50, 250);
+  distance_pid.setDerivativeTolerance(5);
+
+  PID heading_pid(heading_correction_kp, heading_correction_ki,
+                  heading_correction_kd);
+  const double target_heading = correct_angle;
+  heading_pid.setIntegralMax(0);
+  heading_pid.setIntegralRange(1);
+  heading_pid.setSmallBigErrorTolerance(0, 0);
+  heading_pid.setSmallBigErrorDuration(0, 0);
+  heading_pid.setDerivativeTolerance(0);
+  heading_pid.setArrive(false);
+
+  auto limitOutput = [&](double output, double previous) {
+    output = std::fmax(previous - fall_limit,
+                       std::fmin(previous + rise_limit, output));
+    return std::fmax(-max_output, std::fmin(max_output, output));
+  };
+
+  const double start_time = Brain.timer(msec);
+  while (motionActive(start_time, time_limit_msec)) {
+    const double gap = readGap();
+    if (!validGap(gap)) {
+      break;
+    }
+
+    const double traveled = (start_gap - gap) * gap_direction;
+    if (!exit && traveled >= travel_target) {
+      endMotion();  // Keep the last motor output for the next motion.
+      return;
+    }
+
+    const double base_output = exit
+        ? distance_pid.update(traveled) * drive_direction
+        : max_output * drive_direction;
+    if (exit && distance_pid.targetArrived()) {
+      break;
+    }
+
+    // Wrap the error each loop and preserve the PID's fixed target.
+    heading_pid.setTarget(target_heading);
+    const double heading_error =
+        std::remainder(target_heading - getInertialHeading(), 360.0);
+    const double correction = heading_pid.update(target_heading - heading_error);
+
+    double left_output = base_output + correction;
+    double right_output = base_output - correction;
+    scaleToMax(left_output, right_output, max_output);
+
+    prev_left_output = limitOutput(left_output, prev_left_output);
+    prev_right_output = limitOutput(right_output, prev_right_output);
+    driveChassis(prev_left_output, prev_right_output);
+    wait(10, msec);
+  }
+
+  stopDrive();
+}
+
+void driveToOdom(double distance_in, double time_limit_msec,
+                 bool exit, double max_output) {
+  stopChassis(vex::brakeType::coast);
+  beginMotion();
+  const double start_traveled = motion_start_traveled_in;
+
+  double threshold = 0.5;
+  int drive_direction = distance_in > 0 ? 1 : -1;
+  double max_slew_fwd =
+      drive_direction > 0 ? max_slew_accel_fwd : max_slew_decel_rev;
+  double max_slew_rev =
+      drive_direction > 0 ? max_slew_decel_fwd : max_slew_accel_rev;
+  bool min_speed = false;
+
+  if (!exit) {
+    if (!dir_change_start && dir_change_end) {
+      max_slew_fwd = drive_direction > 0 ? 24 : max_slew_decel_rev;
+      max_slew_rev = drive_direction > 0 ? max_slew_decel_fwd : 24;
+    }
+    if (dir_change_start && !dir_change_end) {
+      max_slew_fwd = drive_direction > 0 ? max_slew_accel_fwd : 24;
+      max_slew_rev = drive_direction > 0 ? 24 : max_slew_accel_rev;
+      min_speed = true;
+    }
+    if (!dir_change_start && !dir_change_end) {
+      max_slew_fwd = 24;
+      max_slew_rev = 24;
+      min_speed = true;
+    }
+  }
+
+  distance_in *= drive_direction;
+  PID pid_distance(distance_kp, distance_ki, distance_kd);
+  PID pid_heading(heading_correction_kp, heading_correction_ki,
+                  heading_correction_kd);
+
+  pid_distance.setTarget(distance_in);
+  pid_distance.setIntegralMax(3);
+  pid_distance.setSmallBigErrorTolerance(threshold, threshold * 3);
+  pid_distance.setSmallBigErrorDuration(50, 250);
+  pid_distance.setDerivativeTolerance(5);
+
+  pid_heading.setTarget(normalizeTarget(correct_angle));
+  pid_heading.setIntegralMax(0);
+  pid_heading.setIntegralRange(1);
+  pid_heading.setSmallBigErrorTolerance(0, 0);
+  pid_heading.setSmallBigErrorDuration(0, 0);
+  pid_heading.setDerivativeTolerance(0);
+  pid_heading.setArrive(false);
+
+  double start_time = Brain.timer(msec);
+  double current_distance = 0;
+
+  while (motionActive(start_time, time_limit_msec) &&
+         (exit ? !pid_distance.targetArrived() : current_distance < distance_in)) {
+    current_distance = odom_traveled_in - start_traveled;
+
+    double left_output = pid_distance.update(current_distance) * drive_direction;
+    double right_output = left_output;
+    double correction_output = pid_heading.update(getInertialHeading());
+
+    if (min_speed) {
+      scaleToMin(left_output, right_output, min_output);
+    }
+    if (!exit) {
+      left_output = 24 * drive_direction;
+      right_output = 24 * drive_direction;
+    }
+
+    left_output += correction_output;
+    right_output -= correction_output;
+    scaleToMax(left_output, right_output, max_output);
+
+    if (prev_left_output - left_output > max_slew_rev) {
+      left_output = prev_left_output - max_slew_rev;
+    }
+    if (prev_right_output - right_output > max_slew_rev) {
+      right_output = prev_right_output - max_slew_rev;
+    }
+    if (left_output - prev_left_output > max_slew_fwd) {
+      left_output = prev_left_output + max_slew_fwd;
+    }
+    if (right_output - prev_right_output > max_slew_fwd) {
+      right_output = prev_right_output + max_slew_fwd;
+    }
+
+    prev_left_output = left_output;
+    prev_right_output = right_output;
+    driveChassis(left_output, right_output);
+    wait(10, msec);
+  }
+
+  if (exit) {
+    prev_left_output = 0;
+    prev_right_output = 0;
+    stopChassis(vex::hold);
+  }
+  endMotion();
+}
+
+
 
 /*
  * CurveCircle

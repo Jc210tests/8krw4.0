@@ -39,8 +39,8 @@ motor_group lift = motor_group(right_lift, left_lift);
 motor claw1 = motor(PORT10, ratio6_1, false);
 // Format is rotation(port, reversed)
 // just set these to random ports if you don't use tracking wheels
-rotation horizontal_tracker = rotation(PORT20, false);
-rotation vertical_tracker = rotation(PORT15, true);
+rotation horizontal_tracker = rotation(PORT15, false);
+rotation vertical_tracker = rotation(PORT20, true);
 
 // Distance reset sensors
 // Set these to random ports if you are not using distance resets

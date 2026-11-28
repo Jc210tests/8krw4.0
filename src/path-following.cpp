@@ -135,6 +135,61 @@ void driveProfiled(double distance_in, double time_limit_msec, bool exit, double
   endMotion();
 }
 
+
+// These are defined in the .cpp file that runs odometry.
+extern double odom_motion_x;
+extern double odom_motion_y;
+
+void driveProfiledOdom(double distance_in, double time_limit_msec,
+                       bool exit, double max_speed) {
+  beginMotion();
+  resetWheelSpeeds();
+
+  const double start_x = odom_motion_x;
+  const double start_y = odom_motion_y;
+  const double start_heading_rad = getInertialHeading() * M_PI / 180.0;
+  const double forward_x = std::sin(start_heading_rad);
+  const double forward_y = std::cos(start_heading_rad);
+
+  double speed = profileSpeed(max_speed);
+  double direction = distance_in < 0 ? -1 : 1;
+  double current_speed =
+      fmax(0, direction * (left_wheel_speed + right_wheel_speed) / 2);
+  MotionProfile profile = makeProfile(
+      distance_in, speed, profile_max_accel, current_speed,
+      exit ? 0 : speed * 0.5);
+  double heading_target = normalizeTarget(correct_angle);
+  double start_time = Brain.timer(msec);
+
+  while (motionActive(start_time, time_limit_msec)) {
+    double t = (Brain.timer(msec) - start_time) / 1000.0;
+    double planned_position = 0, planned_speed = 0, planned_accel = 0;
+    profileAt(profile, t, planned_position, planned_speed, planned_accel);
+
+    // Project odometry displacement onto the initial forward direction.
+    double traveled = (odom_motion_x - start_x) * forward_x +
+                      (odom_motion_y - start_y) * forward_y;
+    double position_error = planned_position - traveled;
+
+    if (t >= profile.total_time &&
+        (!exit || fabs(position_error) < 0.5 ||
+         t > profile.total_time + 0.75)) {
+      break;
+    }
+
+    double speed_command = planned_speed + 5.0 * position_error;
+    double turn_command = 0.8 * (heading_target - getInertialHeading());
+    driveWheelSpeeds(speed_command + turn_command,
+                     speed_command - turn_command,
+                     planned_accel, planned_accel);
+    wait(10, msec);
+  }
+
+  if (exit) {
+    stopChassis(vex::hold);
+  }
+  endMotion();
+}
 /*
  * turnProfiled
  * Turns in place with a motion profile: speeds up, turns, and slows down to stop on the angle.

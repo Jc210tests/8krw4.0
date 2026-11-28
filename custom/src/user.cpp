@@ -13,7 +13,7 @@ void runAutonomous() {
   // Add routines to the list in runPreAutonomous() below.
   // exampleAuton();
 
-asyncExample();
+  pathExample();
   
 }
 

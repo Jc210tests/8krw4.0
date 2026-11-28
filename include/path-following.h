@@ -8,6 +8,9 @@ extern double path_lookahead, path_max_lateral_accel;
 
 void driveWheelSpeeds(double left_speed, double right_speed, double left_accel, double right_accel);
 void driveProfiled(double distance_in, double time_limit_msec, bool exit = true, double max_speed = 0);
+void driveProfiledOdom(double distance_in, double time_limit_msec,
+                       bool exit, double max_speed);
+
 void turnProfiled(double angle_deg, double time_limit_msec, bool exit = true, double max_speed = 0);
 void followPath(const Path& path, double time_limit_msec, bool reverse = false, bool exit = true, double max_speed = 0, double lookahead = 0);
 void followPathRamsete(const Path& path, double time_limit_msec, bool reverse = false, bool exit = true, double max_speed = 0);
